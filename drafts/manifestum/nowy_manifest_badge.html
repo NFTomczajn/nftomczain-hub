@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Operation Pi-Grade</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --warn: #facc15;   /* żółty */
+      --border: #ddd;    /* jasna ramka */
+    }
+
+    body {
+      background: #0a0a0a;
+      color: #f0f0f0;
+      font-family: 'Bebas Neue', sans-serif;
+      padding: 2rem;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      margin: 2rem 0;
+      border-radius: 12px;
+    }
+
+    a { color: #0af; text-decoration: none; }
+
+    .mast {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .tag {
+      font-size: 2.5rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 12px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: #fff;
+      color: #000;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--warn);
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.4); opacity: 0.6; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    h2 { margin-bottom: 1rem; }
+  </style>
+</head>
+<body>
+  
+  <img src="https://images.mirror-media.xyz/publication-images/_bemFpgw50H3WCWiF15Iz.png?height=768&width=1536" alt="NFTomczain banner">
+
+  <div class="columns">
+    <div>
+      <h2>Manifest NFTomczaina (PL)</h2>
+      <p>
+        Manifest ten powstał z potrzeby wykrzyczenia swojego istnienia między systemami: zdrowia, pamięci, dostępu i godności. 
+        Jego treść została zapisana na Mirror.xyz i stanowi cyfrowy akt obecności osoby niepełnosprawnej funkcjonującej na granicy
+        rehabilitacji i decentralizacji.
+      </p>
+      <p>
+        <a href="https://mirror.xyz/0x660C2192D2bBA01B8CEff10F1416accA9e25bC88/Zl6tgy-mwHVy87_nMYAOtDwi3fihLsP37cvECg_VuE0" target="_blank">
+        Link do manifestu na Mirror</a>
+      </p>
+    </div>
+    <div>
+      <h2>Manifest NFTomczain (EN)</h2>
+      <p>
+        This manifesto was born out of the need to scream one’s existence between systems: health, memory, access, and dignity.  
+        Its content has been written to Mirror.xyz and serves as a digital act of presence of a disabled person living on the edge 
+        of rehabilitation and decentralization.
+      </p>
+      <p>
+        <a href="https://mirror.xyz/nftomczain.eth/iLzezOyIOItNZ25WWLWOSxZiLWDn90urmFj0f4tduYY" target="_blank">
+        Mirror Manifest Link</a>
+      </p>
+    </div>
+  </div>
+
+  <footer style="margin-top:3rem; font-size:0.9rem; color:#999;">
+    © 2025 NFTomczain. All rights reserved. 🚀 Operation Pi-Grade
+  </footer>
+</body>
+</html>

@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Operation Pi-Grade</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --warn: #facc15;
+      --border: #ddd;
+      --link: #0af;
+      --link-hover: #08c;
+      --text: #f0f0f0;
+      --bg: #0a0a0a;
+    }
+
+    html, body { height: 100%; }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 2rem;
+      font-family: Arial, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Helvetica, sans-serif;
+      line-height: 1.5;
+    }
+
+    .header-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      text-align: center;
+      flex-wrap: wrap;
+    }
+
+    h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.75rem, 6vw + 1rem, 6rem);
+      color: #33ff33;
+      margin: 0;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.6);
+      letter-spacing: 1px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 12px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: #fff;
+      color: #000;
+      font-weight: 700;
+      font-size: 0.9rem;
+      white-space: nowrap;
+    }
+
+    .dot {
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: var(--warn);
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.4); opacity: 0.6; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    @media (prefers-reduced-motion: reduce) { .dot { animation: none; } }
+
+    .columns {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .col {
+      flex: 1;
+      min-width: 320px;
+    }
+    .col h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      color: #33ff33;
+      margin-bottom: 1rem;
+      letter-spacing: .5px;
+    }
+
+    a { color: var(--link); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .notes-box {
+      margin-top: 3rem;
+      padding: 1.5rem;
+      border-top: 2px solid #444;
+      text-align: center;
+      max-width: 880px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    h3 {
+  font-family: monospace;
+  background-color: #111;
+  color: #33ff33;
+  padding: 0.3rem 0.6rem;
+  margin-top: 2rem;
+  border-bottom: 1px dashed #33ff33;
+  text-transform: none;
+  font-size: 0.95rem;
+}
+
+    .donate-box {
+      margin-top: 3rem;
+      padding: 1.5rem 1.5rem 2rem;
+      border: 2px solid var(--link);
+      border-radius: 8px;
+      text-align: center;
+    }
+    .donate-box strong { font-size: 1.2rem; }
+
+ .ens-btn, .copy-btn {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 0.6rem 1.2rem;
+  background: none; /* przezroczyste */
+  color: var(--link);
+  font-weight: 700;
+  border: 1px solid var(--link);
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background .2s ease, color .2s ease;
+  cursor: pointer;
+}
+
+.ens-btn:hover, .copy-btn:hover {
+  background: var(--link);
+  color: #000;
+}
+
+    .qr-wrap {
+      position: relative;
+      display: inline-block;
+      line-height: 0;
+      margin-top: 1rem;
+      user-select: none;
+      cursor: pointer;
+    }
+    .qr {
+      width: 120px; height: 120px;
+      image-rendering: crisp-edges;
+      image-rendering: pixelated;
+      border-radius: 10px;
+      box-shadow: 0 6px 18px rgba(0,0,0,.35);
+    }
+    .qr-logo {
+      position: absolute;
+      inset: 50% auto auto 50%;
+      transform: translate(-50%, -50%);
+      width: 84px; height: 84px;
+      border-radius: 50%;
+      background: #fff;
+      display: grid; place-items: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,.35);
+    }
+    .qr-logo img {
+      width: 74px; height: 74px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%; bottom: 24px;
+      transform: translateX(-50%) translateY(16px);
+      background: rgba(0,0,0,.85);
+      color: #b7f7b7;
+      border: 1px solid #1f9d1f;
+      padding: .55rem .9rem;
+      border-radius: 8px;
+      font-weight: 700;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .18s ease, transform .18s ease;
+      z-index: 9999;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+ .countdown {
+  margin: 1.5rem 0;
+  text-align: center;
+}
+
+.countdown .time {
+  font-family: monospace; /* jak echo */
+  font-size: 2rem;         /* 2x większy */
+  color: orange;
+  padding: 8px 12px;
+  background: #111;
+  border: 1px solid #333;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+  .countdown .uncertain {
+    margin-top: 1.5rem;
+    font-size: 1rem;
+    color: #ccc;
+    font-style: italic;
+  }
+
+.echo-line {
+  background: #111;
+  border: 1px solid #333;
+  font-family: monospace;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  margin-top: 2rem;
+  color: #eee;
+  max-width: 100%;
+  box-sizing: border-box;
+  word-wrap: break-word;
+  line-height: 1.6;
+}
+
+
+.terminal-header {
+  text-align: left;
+  font-size: 0.9rem;
+  background: #111;
+  padding: 4px 0;
+  color: #eee;
+}
+
+.user  { color: #8aff80; }
+.host  { color: #aaa; }
+.path  { color: #0af; }
+.prompt { color: #eee; margin-left: 4px; }
+
+.cursor {
+  display: inline-block;
+  margin-left: 4px;
+  width: 6px;
+  color: #666;
+  animation: blink 1s step-start infinite;
+  font-weight: bold;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.countdown .time {
+  font-family: monospace;
+  font-size: 2rem;
+  color: orange;
+  padding: 8px 12px;
+  background: #111;
+  border: 1px solid #333;
+  border-radius: 4px;
+  display: inline-block;
+  margin: 1rem auto;
+  text-align: center;
+}
+
+.cmd { color: orange; }
+.msg { color: limegreen; }
+
+</style>
+  </style>
+</head>
+<body>
+  <!-- header -->
+  <div class="header-row">
+    <h1>OPERATION PI-GRADE</h1>
+    <span class="badge"><span class="dot"></span> STATUS: BUILD&nbsp;PHASE</span>
+  </div>
+
+  <!-- two columns -->
+  <div class="columns">
+    <!-- English -->
+    <div class="col">
+      <h2>[En] English Version</h2>
+      <p><strong>NFTOMCZAIN is running on a Raspberry Pi 3B+ held together by crypto fumes and decentralization memes.</strong></p>
+      <p>Help fund the upgrade to a Raspberry Pi 5 so this <strong>guerrilla</strong> Web3 node can keep:</p>
+      <ul>
+        <li>publishing manifestos via IPFS and ENS,</li>
+        <li>updating <code>.eth.limo</code> sites with <code>index.html</code> precision,</li>
+        <li>maintaining the sacred <code>~/.nftomczain-init.sh</code> ritual.</li>
+      </ul>
+
+      <h3>## GOAL:</h3>
+      <ul>
+        <li>Raspberry Pi 5 with active cooling</li>
+        <li>Better uptime, faster pinning, less Bluetooth-keyboard rage</li>
+      </ul>
+
+      <h3>## WHAT I OFFER:</h3>
+      <ul>
+        <li>Full transparency (IPFS logbook after every support)</li>
+        <li>ENS <code>text</code> record with your ENS/alias</li>
+        <li>Optional supporter NFT (free, weird, memorable)</li>
+        <li>Terminal-only ASCII livestream of the first Pi 5 boot</li>
+      </ul>
+
+      <h3>## SUPPORT:</h3>
+      <p><strong>ETH / OP / any chain → <code>nftomczain.eth</code></strong></p>
+      
+    </div>
+
+    <!-- Polish -->
+    <div class="col">
+      <h2>[Pl] Wersja Polska</h2>
+      <p><strong>NFTOMCZAIN działa na Raspberry Pi 3B+, trzymanym przy życiu siłą woli i zdecentralizowanym memem.</strong></p>
+      <p>Pomóż w upgrade do Raspberry Pi 5, aby ten <strong>partyzancki</strong> węzeł Web3 mógł dalej:</p>
+      <ul>
+        <li>publikować manifesty przez IPFS i ENS,</li>
+        <li>hostować <code>.eth.limo</code> z chirurgicznym <code>index.html</code>,</li>
+        <li>utrzymywać rytuał <code>~/.nftomczain-init.sh</code>.</li>
+      </ul>
+
+      <h3>## CEL</h3>
+      <ul>
+        <li>Raspberry Pi 5 z aktywnym chłodzeniem</li>
+        <li>Większa stabilność, szybszy pinning, mniej furii na klawiaturę BT</li>
+      </ul>
+
+      <h3>## CO OFERUJĘ</h3>
+      <ul>
+        <li>Pełna jawność (log IPFS po każdej wpłacie)</li>
+        <li><code>text</code> record ENS z Twoim ENS/aliasem</li>
+        <li>Opcjonalny NFT wspierającego (dziwny, darmowy, zapamiętywalny)</li>
+        <li>ASCII-stream z pierwszego bootu Pi 5</li>
+      </ul>
+
+      <h3>## WSPARCIE</h3>
+      <p><strong>ETH / OP / dowolny łańcuch → <code>nftomczain.eth</code></strong></p>
+      
+    </div>
+  </div>
+
+<!-- shared Notes + License -->
+<div class="notes-box">
+  <h3>## NOTES:</h3>
+  <p>Subdomain: <strong><code>manifestum.nftomczain.eth</code></strong> points to the canonical Mirror/IPFS manifest.</p>
+  <p>If the IPNS gateway is slow (bad internet, we’ve been there), use <code>.eth.limo</code> above.</p>
+
+  <h3>## LICENSE & CREDIT:</h3>
+  <p>© 2025 NFTOMCZAIN. Text licensed under <strong>CC BY-NC-SA 4.0</strong>.<br>
+    If you mirror this, pin it hard and credit the node. Even small nodes deserve a big echo.</p>
+
+  <!-- COUNTDOWN -->
+<!-- COUNTDOWN TERMINAL -->
+<div class="echo-line terminal-wrapper">
+
+  <!-- Prompt -->
+  <div class="terminal-header">
+    <span class="user">nftomczain</span><span class="host">@pi:</span><span class="path">~</span><span class="prompt">$</span><span class="cursor">▍</span>
+  </div>
+
+  <!-- Echo 1 -->
+  <div><span class="cmd">echo</span> <span class="msg">"[ Counting down to end of Operation Pi-Grade ]"</span></div>
+
+  <!-- Countdown -->
+  <div id="countdown" class="countdown">
+    <div class="time">Loading...</div>
+  </div>
+
+  <!-- Echo 2 -->
+  <div><span class="cmd">echo</span> <span class="msg">"[ Pi-Grade countdown active — outcome unknown ]"</span></div>
+
+</div>
+
+<p style="text-align:center;"><em>Version: 1.0 · Operation Pi-Grade window: D-14</em></p>
+
+</div>
+
+  <!-- footer / donate -->
+  <div class="donate-box">
+  <p><strong>Donation address:</strong><br><code id="wallet-address">0x660C2192D2bBA01B8CEff10F1416accA9e25bC88</code></p>
+
+  <div class="btn-row" style="display:flex;justify-content:center;gap:.75rem;flex-wrap:wrap;margin-top:.75rem">
+    <a href="https://app.ens.domains/nftomczain.eth" target="_blank" rel="noopener"
+       class="ens-btn">
+      ## View nftomczain.eth on ENS
+    </a>
+    <!-- TEN PRZYCISK BYŁ POTRZEBNY -->
+    <button id="copyBtn" class="ens-btn"
+            style="1rem">
+      ## Copy Address
+    </button>
+  </div>
+
+  <!-- Twój QR jako obrazek (też klikalny do kopiowania) -->
+  <div class="qr-wrap" id="qr-wrap" title="Click QR to copy address"
+       style="position:relative;display:inline-block;line-height:0;margin-top:1rem;cursor:pointer">
+    <img src="https://ipfs.io/ipns/k2k4r8n4i7nzerojewgbyrnks3ikpepziq8z7dzdfqzo5fe55obvf6mr" alt="QR code for wallet address"
+         class="qr-canvas" style="width:240px;height:auto;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,.35)">
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="toast" role="status" aria-live="polite"
+     style="position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(16px);
+            background:rgba(0,0,0,.85);color:#b7f7b7;border:1px solid #1f9d1f;padding:.55rem .9rem;border-radius:8px;
+            font-weight:700;opacity:0;pointer-events:none;transition:opacity .18s ease, transform .18s ease;z-index:9999">
+  ## Copied to clipboard!
+</div>
+
+<script>
+  (function () {
+    const WALLET = "0x660C2192D2bBA01B8CEff10F1416accA9e25bC88";
+    const copyBtn = document.getElementById("copyBtn");
+    const qrWrap  = document.getElementById("qr-wrap");
+    const toast   = document.getElementById("toast");
+
+    async function copyAddress() {
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(WALLET);
+        } else {
+          // Fallback dla file:// lub http
+          const ta = document.createElement("textarea");
+          ta.value = WALLET;
+          ta.setAttribute("readonly", "");
+          ta.style.position = "fixed";
+          ta.style.opacity = "0";
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand("copy");
+          document.body.removeChild(ta);
+        }
+        showToast();
+      } catch (err) {
+        console.error("Copy failed:", err);
+        alert("Copy failed. Address:\n" + WALLET);
+      }
+    }
+
+    function showToast() {
+      toast.style.opacity = "1";
+      toast.style.transform = "translateX(-50%) translateY(0)";
+      clearTimeout(showToast._t);
+      showToast._t = setTimeout(() => {
+        toast.style.opacity = "0";
+        toast.style.transform = "translateX(-50%) translateY(16px)";
+      }, 1600);
+    }
+
+    if (copyBtn) copyBtn.addEventListener("click", copyAddress);
+    if (qrWrap)  qrWrap.addEventListener("click", copyAddress);
+  })();
+</script>
+<p> &nbsp;</p>
+<script>
+  // Target date: 19 Aug 2025, 00:01:00 UTC
+  const targetDate = new Date(Date.UTC(2025, 8, 1, 0, 1, 0)); // miesiące: 0=Jan, 7=Aug
+  const countdownEl = document.querySelector("#countdown .time");
+
+  function updateCountdown() {
+    const now = new Date();
+    const diff = targetDate - now;
+
+    if (diff <= 0) {
+      countdownEl.innerHTML = `<span class="cmd">echo</span> <span class="msg">"[ ~: command not found ]"</span>`;
+      return;
+  }
+
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((diff / (1000 * 60)) % 60);
+    const seconds = Math.floor((diff / 1000) % 60);
+
+    countdownEl.textContent =
+      `${days}d ${hours}h ${minutes}m ${seconds}s`;
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+</script>
+</body>
+
+</html>

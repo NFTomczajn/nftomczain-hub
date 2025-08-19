@@ -1,0 +1,7 @@
+avatar.jpg
+banner.jpg
+index.html
+ls.txt
+Manifest.md
+Manifesto.md
+Manifest_w_różnych_językach-Manifesto_in_Different_Languages.jpg

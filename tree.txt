@@ -1,0 +1,40 @@
+/home/premp/hub/nftomczain-hub
+├── assets
+│   ├── banner.webp
+│   ├── BebasNeue.woff2
+│   ├── favicon-256x256.xcf
+│   ├── favicon.png
+│   ├── favicon.xcf
+│   └── qrcode.png
+├── drafts
+│   └── manifestum
+│       ├── avatar.jpg
+│       ├── banner.jpg
+│       ├── fonts
+│       │   └── BebasNeue.woff2
+│       ├── index.html
+│       ├── ls.txt
+│       ├── Manifest.md
+│       ├── Manifesto.md
+│       ├── Manifest_w_różnych_językach-Manifesto_in_Different_Languages.jpg
+│       ├── Manifest_w_różnych_językach-Manifesto_in_Different_Languages.webp
+│       └── nowy_manifest_badge.html
+├── index.html
+├── manifestum
+│   ├── avatar.jpg
+│   ├── banner.jpg
+│   ├── fonts
+│   │   └── BebasNeue.woff2
+│   ├── index.html
+│   ├── ls.txt
+│   ├── Manifest.md
+│   ├── Manifesto.md
+│   ├── Manifest_w_różnych_językach-Manifesto_in_Different_Languages.jpg
+│   ├── Manifest_w_różnych_językach-Manifesto_in_Different_Languages.webp
+│   └── nowy_manifest_badge.html
+├── pi-grade
+│   ├── index.html
+│   └── manifesto-pi-grade.html
+└── tree.txt
+
+8 directories, 30 files
